@@ -1,2 +1,0 @@
-langchain-cohere
-packaging>=23.2

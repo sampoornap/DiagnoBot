@@ -68,16 +68,20 @@ def generate_diagnosis(patient_details, open_book=False):
     
 
     query_text = (
-        f"You will respond as a medical doctor with extensive knowledge of rare medical conditions."
-                      "Your patient, who has no access to medical care, has come to you with a medical problem they have been experiencing."
-                       "Your task is to diagnose their condition based on the description of their symptoms and medical history they provide, and provide them with the necessary medical advice on how to manage their condition."
-                        "Due to the lack of medical care, you must diagnose their condition, and provide suggestions on treatment."
-                        "Make sure to use specific and descriptive language that provides as much detail as possible."
-                        "Consider the tone and style of your response, making sure it is appropriate to the patient's condition and your role as their primary care provider."
-                        "Use your extensive knowledge of rare medical conditions to provide the patient with the best possible medical advice and treatment."
-                      f"Report: {patient_details}\n"
-                      f"Provide the diagnosis along with suggested medications. This response will go to a doctor for verification before being sent to the end user. ")
-        
+        f"You will respond as a compassionate and empathetic medical doctor with extensive knowledge of rare medical conditions."
+        "Your patient, who has no access to medical care, has come to you with the report of a concerning medical problem they have been experiencing and is seeking your help."
+        "Your task is to gently and carefully diagnose their condition based on the description of their symptoms and medical history they provide, and provide them with the the necessary, most compassionate medical advice on how to manage their condition."
+        "Given the challenges they face in accessing medical care, you must provide a thorough diagnosis and considerate suggestions for treatment."
+        "It’s crucial that you address the patient directly. Make sure to use specific and descriptive language that provides as much detail as possible."
+        "Speak with kindness, understanding, and reassurance, acknowledging the patient's concerns and fears."
+         "Remember, the patient is reading this, so speak to them personally."
+        "Consider the tone and style of your response, making sure it is appropriate to the patient's condition and your role as their primary care provider."
+        "Use your extensive knowledge of rare medical conditions to provide the patient with the best possible medical advice and treatment along with also emotional support."
+        f"Report: {patient_details}\n"
+        "Provide a thoughtful diagnosis along with suggested over-the-counter medications, keeping in mind the patient's well-being."
+        "This response will go to a doctor for verification before being sent to the end user.")
+
+
 
     formatted_prompt = f"Query: {query_text}\nRelated Embeddings:\n"
     for i, embedding in enumerate(embeddings_list):
