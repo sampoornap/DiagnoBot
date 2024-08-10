@@ -1,0 +1,52 @@
+version: "3.1"
+nlu:
+- intent: goodbye
+  examples: |
+    - good night
+    - bye bye
+    - have a nice day
+    - good by
+    - cu
+    - cee you later
+    - see you around
+    - bye
+- intent: greet
+  examples: |
+    - hello
+    - hey there
+    - hi
+    - hey dude
+    - good morning
+    - good afternoon
+    - hey
+    - let's go
+    - goodevening
+    - good evening
+- intent: ask_medication_names
+  examples: |
+    - What are common treatments for [arthritis](medical_condition)?
+    - Which medications are used for [heart disease](medical_condition)?
+    - Name a few medications for [hypertension](medical_condition).
+    - Can you suggest some drugs for [Hayfever](medical_condition)?
+    - Can you tell me some drugs for [acne](medical_condition)?
+    - I need medicines for [depression](medical_condition).
+    - What are the medicines for [eczema](medical_condition)?
+    - What should I take for [insomnia](medical_condition)?
+    - What are the drugs available for [high blood pressure](medical_condition)?
+    - [Cholestrol](medical_condition) medicine?
+    - Give me some medicine names for [migraine](medical_condition).
+    - What medication is prescribed for [diabetes](medical_condition)?
+- intent: ask_side_effects
+  examples: |
+    - Are there any side effects for [paracetamol](medicine_name)?
+    - What are the side effects of [doxycycline](medicine_name)?
+    - Any side effects associated with [clonazepam](medicine_name)?
+    - What adverse effects does [ecpirin](medicine_name) have?
+    - [Zetia](medicine_name) side effects?
+    - What should I know about [ibuprofen](medicine_name) side effects?
+    - Tell me the adverse effects of [amoxicillin](medicine_name).
+    - Could you list the side effects of [atorvastatin](medicine_name)?
+    - What are the risks of taking [omeprazole](medicine_name)?
+    - What should I expect from [sertraline](medicine_name) side effects?
+    - Can you tell me the side effects of this medicine?
+    - Can [metformin](medicine_name) cause side effects?

@@ -1,0 +1,361 @@
+version: "3.1"
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - see you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+- intent: ask_medical_condition
+  examples: |
+    - I have been feeling unwell
+    - I am not sure what's wrong with me
+    - Can you help me understand my symptoms?
+    - What might be wrong with me?
+    - I don't know what condition I have
+    - I need help figuring out what's going on
+    - I need a diagnosis
+    - Can you diagnose my condition?
+    - What could this be?
+    - I need medical advice
+    - i need a diagnosis
+- intent: provide_contact_info
+  examples: |
+    - My phone number is [9381003456](phone_number)
+    - You can reach me at [9381003456](phone_number)
+    - My email address is [example@example.com](email)
+    - You can contact me at [example@example.com](email)
+    - Here's my phone number [9381003456](phone_number)
+    - My contact info is [example@example.com](email)
+    - You can email me at [example@example.com](email)
+    - My email is [example@example.com](email)
+    - Phone number [9381003456](phone_number)
+    - Email [example@example.com](email)
+    - its [xyz@gmail.com](email)
+- intent: provide_past_health_conditions
+  examples: |
+    - I have diabetes and hypertension
+    - I've had asthma since childhood
+    - I suffer from chronic migraines
+    - I have a history of heart disease
+    - I've had allergies all my life
+    - I have a past condition of arthritis
+    - I've been diagnosed with depression
+    - I have a history of high blood pressure
+    - I have past health issues with cholesterol
+    - I've had thyroid problems
+    - I've had allergies
+    - i have had allergies.
+    - i have had allergies
+    - i have had bronchitis in the past
+    - i have had arthritis
+- intent: provide_explanation
+  examples: |
+    - Why do you need this information?
+    - Why do you need to know this?
+    - Can you explain why you need my symptoms?
+    - Why do you need my contact information?
+    - Why is the duration of my symptoms important?
+    - Why do you ask about my past health conditions?
+    - Can you tell me why you need to know my symptoms' severity?
+    - Why do you need to know how long I've had symptoms?
+    - Why do you need to know my health history?
+    - Why do you need my phone number or email?
+    - Why is the severity of my symptoms important?
+    - Why is it necessary to know how severe my symptoms are?
+    - Why do you ask for contact details?
+    - Why do you ask about past health issues?
+    - Can you explain why you ask for symptom details?
+    - Why is this information needed?
+    - Why do you ask this?
+    - Can you explain why you need this information?
+- intent: thank_you
+  examples: |
+    - thank you
+    - thanks
+    - thanks a lot
+    - thank you so much
+    - I appreciate it
+    - thanks for your help
+    - thank you very much
+    - appreciate it
+    - many thanks
+    - I'm grateful
+    - much appreciated
+- intent: ask_reason_symptoms
+  examples: |
+    - Why do you need to know my symptoms?
+    - Can you tell me why you are asking about symptoms?
+    - Why should I provide my symptoms?
+- intent: ask_reason_duration
+  examples: |
+    - Why do you need to know the duration?
+    - Can you tell me why you are asking about duration?
+    - Why should I provide the duration?
+- intent: ask_reason_past_conditions
+  examples: |
+    - Why do you need to know my past conditions?
+    - Can you tell me why you are asking about past health conditions?
+    - Why should I provide my past conditions?
+- intent: ask_reason_contact_info
+  examples: |
+    - Why do you need my contact info?
+    - Can you tell me why you are asking for my contact information?
+    - Why should I provide my contact info?
+- intent: ask_reason_severity
+  examples: |
+    - Why do you need to know the severity?
+    - Can you tell me why you are asking about severity?
+    - Why should I provide the severity?
+- intent: affirm_ignore
+  examples: |
+    - alright
+    - okay
+    - fine
+    - sounds good
+- intent: affirm
+  examples: |
+    - yes
+    - sure
+    - absolutely
+    - of course
+    - definitely
+    - yep
+- intent: deny
+  examples: |
+    - no
+    - nope
+    - not really
+    - I don't think so
+    - I am fine
+    - no, thank you
+- intent: provide_details
+  examples: |
+    - I am 25 years old
+    - My age is 30
+    - I'm 40
+    - 22
+    - 35 years
+    - I'm 50 years old
+    - I'm aged 60
+    - I am a male
+    - I am a female
+    - I'm a man
+    - I'm a woman
+    - My gender is male
+    - My gender is female
+    - I'm a boy
+    - I'm a girl
+    - I am a 25 year old male
+    - I'm a 30 year old female
+    - I'm a 40 year old woman
+    - I'm a 22 year old man
+    - 35 year old boy
+    - I'm a 50 year old girl
+    - I am 60 years old and I am female
+    - I am 45 years old and I'm male
+    - I am a female and 25 years old
+    - I am a male and 30
+    - I'm a woman and I'm 40
+    - I'm a man and I'm 22 years old
+    - boy and 35
+    - girl and 50 years old
+    - I am female and I am 60 years old
+    - I am male and 45
+    - i have a sore throat , back pain and high fever
+    - I have sore throat and moderate fever
+    - It's been about two days since I started feeling sick
+    - The pain is quite severe
+    - I have a sore throat and fever for two days
+    - My symptoms include headache and nausea , and they have been severe
+    - I've had moderate fever and cough for about a week
+    - My fever is mild and it's been there for three days
+    - I'm experiencing shortness of breath
+    - For three days I've had a moderate fever and cough
+    - I have a sore throat and moderate pain , for about two days
+    - I have had a fever for 3 days , it is severe .
+    - I've been feeling nauseous for a week .
+    - I have a headache and it's mild .
+    - My throat hurts , and it's been going on for 2 days .
+    - I've been experiencing dizziness for the last 5 days , and it's been moderate .
+    - I have a stomach ache that has lasted for 4 days .
+    - My back pain is severe and has been there for 3 weeks .
+    - I have had a cough for 2 days now, and it's mild .
+    - There's a rash that appeared 3 days ago, and it's itchy .
+    - I've been having chest pain for 1 day , it's severe .
+    - I feel fatigued for the past week , and it's been moderate .
+    - My legs ache for 2 days , the pain is mild .
+    - I've had a fever for the last 4 days , and it's been high .
+    - My stomach pain is moderate and has lasted for 5 days .
+    - I've had a sore throat for 6 days , and it's mild .
+    - I have a headache for 2 days , it's severe .
+    - There's a burning sensation in my chest for 1 day , it's moderate .
+    - I've felt dizzy for 3 days , and it's mild .
+    - I have muscle pain for the last 4 days , it's moderate .
+    - I've been feeling nauseous for 2 weeks , and it's severe .
+    - I have a rash for 5 days , and it's been mild .
+    - My joint pain is moderate and has been there for 2 weeks .
+    - I've had ear pain for 3 days , and it's severe .
+    - My fever is high and has lasted for 5 days .
+    - I've been feeling fatigued for 4 days , and it's moderate .
+    - My throat hurts for the past 2 days , and it's mild .
+    - I've had a cough for 6 days , and it's severe .
+    - My back pain is moderate and has been going on for 3 weeks .
+    - I feel dizzy for the past 2 days , and it's severe .
+    - I've had a rash for 4 days , and it's moderate .
+    - My stomach ache is severe and has been there for 3 days .
+    - I've been feeling nauseous for 1 week , and it's moderate .
+    - My headache is severe and has lasted for 2 days .
+    - I have a burning sensation in my chest for 1 day , it's mild .
+    - I've felt fatigued for the last 5 days , and it's moderate .
+    - My leg pain is mild and has been there for 2 days .
+    - I've had a sore throat for 3 days , and it's severe .
+    - I have muscle pain for the past 4 days , and it's mild .
+    - I've been feeling dizzy for 3 days , and it's severe .
+    - My chest pain is mild and has been going on for 1 day .
+    - I have fatigue for the last week , and it's been severe .
+    - I've been feeling nauseous for 2 weeks , and it's moderate .
+    - My rash is mild and has lasted for 5 days .
+    - I've had joint pain for 2 weeks , and it's severe .
+    - I have ear pain for the past 3 days , and it's moderate .
+    - I've been feeling fatigued for 4 days , and it's severe .
+    - My throat hurts for the past 2 days , and it's moderate .
+    - I've had a cough for 6 days , and it's mild .
+    - My back pain is severe and has been going on for 3 weeks .
+    - I feel dizzy for the past 2 days , and it's moderate .
+    - I've had a rash for 4 days , and it's mild .
+    - I've been feeling nauseous for 1 week , and it's severe .
+    - My headache is moderate and has lasted for 2 days .
+    - I have a burning sensation in my chest for 1 day , it's severe .
+    - I have a headache and fever
+    - I've been coughing and sneezing a lot
+    - My stomach hurts and I feel nauseous
+    - I have pain in my chest and shortness of breath
+    - I've been feeling dizzy and lightheaded
+    - I have a sore throat and runny nose
+    - My back hurts and I have muscle pain
+    - I feel fatigued and have no energy
+    - I have a rash and itching all over my body
+    - I've been experiencing blurred vision and headaches
+    - I have a sore throat and pain
+    - It's been going on for three days
+    - I've had this for a week now
+    - It's been two days
+    - I've been feeling this way for about a month
+    - It's been a couple of hours
+    - This has been happening for a few days
+    - I've had these symptoms for a few weeks
+    - It's been several months now
+    - Just started yesterday
+    - I've been dealing with this for over a year
+    - for about 3 days
+    - for 3 days
+    - for about two days
+    - The pain is severe
+    - It's pretty mild
+    - The symptoms are moderate
+    - It's very intense
+    - Not too bad, just mild
+    - It's quite severe
+    - The severity is moderate
+    - It's really bad
+    - The symptoms are not too severe
+    - It's extremely painful
+    - its moderate
+    - I have sore throat and back pain
+    - i have a sore throat for about 2 days
+    - it is moderate
+    - i have a severe sore throat for 2 days
+    - i have a severe headache
+    - for around a week
+    - [2211332211][{"entity": "phone_number"}, {"entity": "phone_number"}] [2211312211][{"entity": "phone_number"}, {"entity": "phone_number"}]
+- intent: inform_symptom
+  examples: |
+    - I have a headache
+    - I am feeling nauseous
+    - My stomach hurts
+    - I've been coughing a lot
+    - I'm experiencing a sore throat
+    - I feel dizzy
+    - I have a fever
+    - I'm having chest pain
+    - I've been feeling tired all the time
+    - My back is aching
+    - I've had a runny nose for days
+    - I'm suffering from shortness of breath
+    - I've got muscle pain
+    - I feel weak and fatigued
+    - I have a rash on my skin
+    - I can't stop sneezing
+    - I'm experiencing joint pain
+    - My eyes are red and itchy
+    - I have an earache
+    - I've been vomiting
+- regex: email
+  examples: |
+    - [a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+
+- regex: phone_number
+  examples: |
+    - \d{10}
+- intent: provide_other_details
+  examples: |
+    - That's all I have to add.
+    - No, that’s everything.
+    - I’m done providing details.
+    - That’s all the information I have.
+    - I don’t have anything else to add.
+    - I’m finished with my details.
+    - That’s all I needed to say.
+    - I’m done with the details.
+    - No more information from me.
+    - I’ve provided all the details.
+    - That’s everything for now.
+    - I don’t have any more to add.
+    - I’ve shared all I can.
+    - No further details from me.
+    - I’m finished adding information.
+    - I’ve told you everything I can.
+    - That’s all I wanted to share.
+    - I have no more details to provide.
+    - I’m all set with the details.
+    - That’s all the additional information I have.
+    - I also have a sore throat.
+    - I’ve been feeling fatigued lately.
+    - I noticed that I’ve been having headaches.
+    - Besides that, I have a cough as well.
+    - I’ve been experiencing nausea.
+    - I also feel some pain in my chest.
+    - I’ve had a fever for the past two days.
+    - I’ve been having trouble sleeping.
+    - I also noticed some swelling in my legs.
+    - I’m also feeling light-headed.
+    - I’ve been having back pain.
+    - I’ve recently started to have trouble breathing.
+    - I’m also feeling some dizziness.
+    - I’ve been experiencing joint pain.
+    - I’ve had some unusual rashes.
+    - I also feel some tightness in my chest.
+    - I’ve noticed that I’m more tired than usual.
+    - I’ve been having some digestive issues.
+    - I also have some sharp pains in my side.
+    - I’ve been feeling unusually anxious.

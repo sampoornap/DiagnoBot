@@ -1,0 +1,6 @@
+venv
+.env
+__pycache__
+.rasa
+actions/langchain_app/.env
+actions/__pycache__

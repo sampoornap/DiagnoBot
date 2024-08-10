@@ -1,0 +1,21 @@
+version: "3.1"
+nlu:
+- intent: goodbye
+  examples: |
+    - goodbye
+    - see you later
+- intent: greet
+  examples: |
+    - hello there
+    - goodmorning
+    - moin
+- intent: ask_medication_names
+  examples: |
+    - Suggest medications for [allergies](medical_condition).
+    - Can you list some drugs for [asthma](medical_condition)?
+    - What drugs can I take for [anxiety](medical_condition)?
+- intent: ask_side_effects
+  examples: |
+    - What are the possible side effects of [lisinopril](medicine_name)?
+    - Could [naproxen](medicine_name) have any adverse effects?
+    - What might happen if I take [prednisone](medicine_name)?

@@ -1,0 +1,98 @@
+Cancer
+Diabetes (Type 1)
+Allergies
+medical_condition
+Pneumonia
+Depression
+Acne
+Seizures
+AIDS/HIV
+Insomnia
+Stroke
+Eczema
+COPD
+Colds & Flu
+UTI
+Hypothyroidism
+Covid 19
+Hayfever
+Incontinence
+Angina
+IBD (Bowel)
+Swine Flu
+Osteoarthritis
+Asthma
+Rheumatoid Arthritis
+Osteoporosis
+Alzheimer's
+Herpes
+Diabetes (Type 2)
+Psoriasis
+Gastrointestinal
+Hair Loss
+Weight Loss
+Hypertension
+GERD (Heartburn)
+Pain
+Bronchitis
+Constipation
+ADHD
+Menopause
+Migraine
+Bipolar Disorder
+Diarrhea
+Cholesterol
+Schizophrenia
+Anxiety
+Erectile Dysfunction
+Gout
+Addison's Disease
+Alopecia Areata
+Celiac Disease
+Chronic Fatigue Syndrome
+Dementia
+Endometriosis
+Fibromyalgia
+Glaucoma
+Gout
+Hepatitis B
+Hepatitis C
+Herniated Disc
+Hyperglycemia
+Hypoglycemia
+Irritable Bowel Syndrome (IBS)
+Lupus
+Multiple Sclerosis
+Parkinson’s Disease
+Pelvic Inflammatory Disease (PID)
+Psoriatic Arthritis
+Rheumatic Fever
+Sarcoidosis
+Scleroderma
+Systemic Lupus Erythematosus (SLE)
+Thyroiditis
+Tuberculosis (TB)
+Viral Hepatitis
+Wegener's Granulomatosis
+Chronic Kidney Disease (CKD)
+Kidney Stones
+Chronic Pancreatitis
+Sleep Apnea
+Tinnitus
+Autoimmune Hepatitis
+Bursitis
+Carpal Tunnel Syndrome
+Diverticulitis
+Epilepsy
+Herpes Simplex Virus (HSV)
+Knee Osteoarthritis
+Myasthenia Gravis
+Neurofibromatosis
+Paget's Disease of Bone
+Pernicious Anemia
+Polycystic Ovary Syndrome (PCOS)
+Primary Biliary Cholangitis
+Rheumatoid Vasculitis
+Sjögren's Syndrome
+Spina Bifida
+Vulvodynia

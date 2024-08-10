@@ -1,0 +1,67 @@
+
+version: "3.1"
+stories:
+- story: interactive_story_1
+  steps:
+  - intent: nlu_fallback
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_medical_condition
+  - action: action_ask_next_question
+  - action: action_ask_symptoms
+  - slot_was_set:
+    - last_question: symptoms
+  - intent: provide_details
+  - action: action_update_slots
+  - slot_was_set:
+    - symptom_severity: true
+  - slot_was_set:
+    - symptoms: true
+  - action: action_ask_next_question
+  - action: action_ask_symptom_duration
+  - slot_was_set:
+    - last_question: symptom_duration
+  - intent: provide_details
+  - action: action_update_slots
+  - slot_was_set:
+    - symptom_severity: true
+  - slot_was_set:
+    - symptom_duration: true
+  - action: action_ask_next_question
+  - action: action_ask_contact_info
+  - slot_was_set:
+    - last_question: contact_info
+  - intent: provide_details
+    entities:
+    - phone_number: '2211332211'
+    - phone_number: '2211312211'
+    - phone_number: '2211332211'
+    - phone_number: '2211312211'
+  - slot_was_set:
+    - contact_info: '2211312211'
+  - action: action_ask_next_question
+  - action: action_ask_past_health_conditions
+  - slot_was_set:
+    - last_question: past_health_conditions
+  - intent: provide_past_health_conditions
+  - slot_was_set:
+    - past_health_conditions: i have had arthiritis
+  - action: action_ask_next_question
+  - action: action_submit_and_provide_diagnosis
+  - action: action_submit_and_provide_diagnosis_helper
+  - slot_was_set:
+    - symptoms: null
+  - slot_was_set:
+    - symptom_duration: null
+  - slot_was_set:
+    - symptom_severity: null
+  - slot_was_set:
+    - contact_info: null
+  - slot_was_set:
+    - past_health_conditions: null
+  - slot_was_set:
+    - questions_asked: null
+  - slot_was_set:
+    - last_question: null
+  - slot_was_set:
+    - session_started_metadata: null

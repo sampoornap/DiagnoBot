@@ -1,0 +1,184 @@
+version: '3.1'
+intents:
+- affirm
+- affirm_ignore
+- ask_medical_condition
+- ask_medication_names
+- ask_reason_contact_info
+- ask_reason_duration
+- ask_reason_past_conditions
+- ask_reason_severity
+- ask_reason_symptoms
+- ask_side_effects
+- deny
+- goodbye
+- greet
+- inform_symptom
+- provide_contact_info
+- provide_details
+- provide_explanation
+- provide_past_health_conditions
+- thank_you
+entities:
+- phone_number
+- symptoms
+- symptom_severity
+- symptom_duration
+- email
+- contact_info
+- past_health_conditions
+slots:
+  symptoms:
+    type: bool
+    mappings:
+    - type: custom
+    influence_conversation: true
+  symptom_duration:
+    type: bool
+    mappings:
+    - type: custom
+    influence_conversation: true
+  symptom_severity:
+    type: bool
+    mappings:
+    - type: custom
+    influence_conversation: true
+  contact_info:
+    type: text
+    mappings:
+    - type: from_entity
+      entity: email
+    - type: from_entity
+      entity: phone_number
+    influence_conversation: true
+  past_health_conditions:
+    type: text
+    mappings:
+    - type: from_text
+      intent: provide_past_health_conditions
+    influence_conversation: true
+  patient_responses:
+    type: text
+    mappings:
+    - type: custom
+  last_question:
+    type: categorical
+    values:
+    - symptoms
+    - symptom_duration
+    - symptom_severity
+    - contact_info
+    - past_health_conditions
+    - patient_age
+    - patient_sex
+    - other_details
+    mappings:
+    - type: custom
+responses:
+  utter_introduction:
+  - text: Hi, I am DiagnoBot, your medical diagnosis assistant.
+  - text: Hello! I'm DiagnoBot, your health diagnosis assistant.
+  - text: Hey there! DiagnoBot here, your medical diagnosis assistant.
+  - text: Greetings! I'm DiagnoBot, ready to assist you with your medical diagnosis.
+  - text: Hi! I'm DiagnoBot, your friendly medical diagnostic assistant.
+  utter_how_can_i_help:
+  - text: What may I assist you with?
+  utter_greet:
+  - text: Hello! How can I help you today?
+  - text: Hi there! What can I assist you with?
+  - text: Greetings! How may I be of service?
+  utter_goodbye:
+  - text: Goodbye! Have a nice day!
+  - text: Take care!
+  - text: Goodbye! Stay safe and healthy!
+  utter_ask_symptoms:
+  - text: Please describe your symptoms.
+  - text: What symptoms are you experiencing?
+  - text: Can you tell me about your symptoms?
+  utter_ask_symptom_duration:
+  - text: How long have you been experiencing these symptoms?
+  - text: Can you tell me the duration of your symptoms?
+  - text: How many days have you had these symptoms?
+  utter_ask_symptom_severity:
+  - text: How severe are your symptoms?
+  - text: Can you describe the severity of your symptoms?
+  - text: How bad are your symptoms?
+  utter_ask_contact_info:
+  - text: Could you provide your contact information (phone number or email)?
+  - text: May I have your contact information?
+  - text: Please share your contact information.
+  utter_ask_past_health_conditions:
+  - text: Do you have any past health conditions we should be aware of?
+  - text: Please mention any past health conditions.
+  - text: Have you had any previous health issues?
+  utter_provide_diagnosis:
+  - text: Diagnosing............
+  - text: Analyzing your information for a diagnosis...
+  - text: Processing your details for diagnosis...
+  utter_thank_you_response:
+  - text: You're welcome! If you have any other questions, feel free to ask.
+  - text: Happy to help! Let me know if there's anything else you need.
+  - text: You're welcome! Is there anything else I can assist you with?
+  utter_reason_for_asking_symptoms:
+  - text: Understanding your symptoms helps me assess your condition more accurately.
+  - text: Symptoms provide important clues about your health. Please describe them.
+  - text: Describing your symptoms helps me better understand your current health status.
+  utter_reason_for_asking_duration:
+  - text: Knowing how long you've had symptoms helps me evaluate their severity.
+  - text: Duration helps me gauge the progression of your symptoms. How long has it been?
+  - text: Symptom duration gives me insights into their impact on your health. Please specify.
+  utter_reason_for_asking_past:
+  - text: Understanding your past health conditions helps me provide better care.
+  - text: Past health conditions play a role in current symptoms. Could you share any?
+  - text: Knowing your medical history assists me in understanding your health better.
+  utter_reason_for_asking_contact:
+  - text: Providing contact information helps us reach you if needed for further assistance.
+  - text: Contact information ensures we can follow up with any necessary information.
+  - text: Your contact details are important for keeping you informed about your health.
+  utter_reason_for_asking_severity:
+  - text: Understanding symptom severity helps me prioritize your care.
+  - text: Severity guides our approach to managing your symptoms. How would you rate them?
+  - text: Severity helps us determine the urgency of your symptoms. Please describe them.
+  utter_ask_if_need_help:
+  - text: Do you need help with anything else?
+  - text: Is there anything else I could help you with?
+  utter_thank_you:
+  - text: Thanks a lot for using my service! Have a great day!
+actions:
+- action_ask_symptom_duration
+- action_ask_past_health_conditions
+- action_ask_symptoms
+- action_submit_and_provide_diagnosis_helper
+- action_ask_next_question
+- utter_greet
+- action_ask_contact_info
+- action_update_slots
+- action_submit_and_provide_diagnosis
+- action_ask_symptom_severity
+- utter_ask_symptom_severity
+- utter_ask_symptom_duration
+- utter_ask_contact_info
+- utter_ask_past_health_conditions
+- utter_ask_symptoms
+- action_provide_medication_names
+- action_provide_side_effects
+- utter_reason_for_asking_symptoms
+- utter_reason_for_asking_duration
+- utter_reason_for_asking_past
+- utter_reason_for_asking_contact
+- utter_reason_for_asking_severity
+- action_provide_explanation
+- action_fill_symptom_list
+- action_reask_last_question
+- action_session_start
+- action_clear_all_slots
+- action_reason_for_asking_symptoms
+- action_reason_for_asking_symptom_duration
+- action_reason_for_asking_contact_info
+- action_reason_for_asking_past_health_conditions
+- action_reason_for_asking_symptom_severity
+- utter_ask_if_need_help
+- utter_thank_you
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: false

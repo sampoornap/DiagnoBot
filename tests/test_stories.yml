@@ -1,0 +1,47 @@
+version: "3.1"
+stories:
+
+- story: Greet the user
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- story: User says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User asks for medication names for a specific medical condition
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_medication_names
+    entities:
+      - medical_condition: Acne
+  - slot_was_set:
+    - medical_condition: Acne
+  - action: action_provide_medication_names
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User does not provide a medical condition
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_medication_names
+  - action: action_provide_medication_names
+  - intent: goodbye
+  - action: utter_goodbye
+
+- story: User asks for side effects of a specific medication
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_side_effects
+    entities:
+      - medicine_name: Sulfoam
+  - slot_was_set:
+    - medicine_name: Sulfoam
+  - action: action_provide_side_effects
+  - intent: goodbye
+  - action: utter_goodbye

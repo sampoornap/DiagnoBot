@@ -1,0 +1,336 @@
+version: "3.1"
+
+stories:
+
+- story: user thanks bot
+  steps:
+  - intent: thank_you
+  - action: utter_thank_you_response
+
+- story: user asks for reason for providing symptoms 1
+  steps:
+    - action: action_ask_next_question
+    - intent: ask_reason_symptoms
+    - action: action_reason_for_asking_symptoms
+    - intent: provide_details
+    #- action: action_update_slots
+    - action: action_ask_next_question
+  
+
+- story: user asks for reason for providing duration 1
+  steps:
+    - action: action_ask_next_question
+    - intent: ask_reason_duration
+    - action: action_reason_for_asking_symptom_duration
+    - intent: provide_details
+    #- action: action_update_slots
+    - action: action_ask_next_question
+ 
+
+- story: user asks for reason for providing past conditions 1
+  steps:
+    - action: action_ask_next_question
+    - intent: ask_reason_past_conditions
+    - action: action_reason_for_asking_past_health_conditions
+    - intent: provide_past_health_conditions
+    - slot_was_set:
+        - past_health_conditions: i've had allergies
+    - action: action_ask_next_question
+
+
+- story: user asks for reason for providing contact 1
+  steps:
+    - action: action_ask_next_question
+    - intent: ask_reason_contact_info
+    - action: action_reason_for_asking_contact_info
+    - intent: provide_contact_info
+      entities:
+        - email: xyz@gmail.com
+    - slot_was_set:
+        - contact_info: xyz@gmail.com
+    - action: action_ask_next_question
+
+- story: user asks for reason for providing severity 1
+  steps:
+    - action: action_ask_next_question
+    - slot_was_set:
+      - last_question: symptom_severity
+    - intent: ask_reason_severity
+    - action: action_reason_for_asking_symptom_severity
+    - intent: provide_details
+    - slot_was_set:
+        - symptom_severity: true
+    #- action: action_update_slots
+    - action: action_ask_next_question
+
+- story: user asks for reason for providing symptoms 2
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: true
+  - intent: provide_explanation
+  - action: action_provide_explanation
+
+
+
+- story: user interjects with affirm_ignore
+  steps:
+  - intent: affirm_ignore
+
+- story: beginning of session
+  steps:
+  - action: action_session_start
+  - intent: ask_medical_condition
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: symptoms
+
+- story: greet and ask medical questions
+  steps:
+  - intent: greet
+  - action: utter_greet
+  
+- story: user asks for diagnosis
+  steps:
+  - intent: ask_medical_condition
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: symptoms
+
+- story: provide symptoms and duration
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: symptoms
+  - intent: provide_details
+  - slot_was_set:
+    # - symptom_list: true
+    - symptom_duration: true
+  #- action: action_update_slots
+  - action: action_ask_next_question
+
+- story: provide severity
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: symptom_severity
+  - intent: provide_details
+  - slot_was_set:
+    - symptom_severity: true
+  #- action: action_update_slots
+  - action: action_ask_next_question
+
+
+- story: provide duration
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: symptom_duration
+  - intent: provide_details
+  - slot_was_set:
+    - symptom_duration: true
+  #- action: action_update_slots
+  - action: action_ask_next_question
+
+- story: provide age and sex
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: patient_age
+  - intent: provide_details
+  - slot_was_set:
+    - patient_age: true
+  - action:  action_ask_next_question
+  - slot_was_set:
+    - last_question: patient_sex
+  - intent: provide_details
+  - slot_was_set:
+    - patient_sex: true
+  - action:  action_ask_next_question
+  
+
+
+
+- story: provide symptoms
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: symptoms
+  - intent: provide_details
+    
+  - slot_was_set:
+    - symptoms: true
+  #- action: action_update_slots
+  - action: action_ask_next_question
+
+- story: provide past health conditions
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: past_health_conditions
+  - intent: provide_past_health_conditions
+  - slot_was_set:
+    - past_health_conditions: i have had allergies 
+  - action: action_ask_next_question
+
+- story: provide other details
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: past_health_conditions
+  - intent: provide_other_details
+  - slot_was_set:
+    - other_details: nothing for now
+  - action: action_ask_next_question
+
+
+- story: provide all necessary information in one message
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: symptoms
+  - intent: provide_details
+  - slot_was_set:
+    - symptoms: true
+    - symptom_severity: true
+    - symptom_duration: true
+  # - action: action_update_slots
+  - action: action_ask_next_question
+  
+
+
+- story: provide partial details and continue
+  steps:
+  - action: action_ask_next_question
+  - slot_was_set:
+    - last_question: symptoms
+  - intent: provide_details
+  - slot_was_set:
+    - symptoms: true
+    - symptom_duration: true
+  #- action: action_update_slots
+  - action: action_ask_next_question
+
+- story: provide contact information as email
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_contact_info
+    entities:
+    - email: xyz@gmail.com
+  - slot_was_set:
+    - contact_info: xyz@gmail.com
+  - action: action_ask_next_question
+  - intent: provide_past_health_conditions
+  - slot_was_set:
+    - past_health_conditions: i have had allergies 
+  - action: action_ask_next_question
+
+  
+
+- story: provide contact information as phone no
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_contact_info
+    entities:
+    - phone_number: 9988776655
+  - slot_was_set:
+    - contact_info: 9988776655
+  - action: action_ask_next_question
+
+- story: User asks for explanation
+  steps:
+  - intent: provide_explanation
+  - action: action_provide_explanation
+ 
+
+- story: interactive_story_1
+  steps:
+  - intent: ask_medical_condition
+  - action: action_ask_next_question
+  # - action: action_ask_symptoms
+  - slot_was_set:
+    - last_question: symptoms
+  - intent: provide_details
+  #   entities:
+  #   - symptom_severity: severe
+  #   - symptoms: sore throat
+  #   - symptom_duration: 2 days
+  # - slot_was_set:
+  #   - symptoms: sore throat
+  # - slot_was_set:
+  #   - symptom_list:
+  #     - sore throat
+  # - slot_was_set:
+  #   - symptom_duration: 2 days
+  # - slot_was_set:
+  #   - symptom_severity: severe
+  #- action: action_update_slots
+  - action: action_ask_next_question
+  # - action: action_ask_contact_info
+  - slot_was_set:
+    - last_question: contact_info
+  - intent: provide_contact_info
+    entities:
+    - phone_number: '9988776655'
+    - phone_number: '9988776655'
+  - slot_was_set:
+    - contact_info: '9988776655'
+  - action: action_ask_next_question
+  # - action: action_ask_past_health_conditions
+  - slot_was_set:
+    - last_question: past_health_conditions
+  - intent: provide_past_health_conditions
+  - slot_was_set:
+    - past_health_conditions: i have had bronchitis in the past
+  - action: action_ask_next_question
+  # - action: action_submit_and_provide_diagnosis
+
+- story: interactive_story_2
+  steps:
+  - intent: greet
+  - action: utter_greet
+  - intent: ask_medical_condition
+  - action: action_ask_next_question
+  # - action: action_ask_symptoms
+  # - slot_was_set:
+  #   - last_question: true
+  - intent: provide_details
+  #- action: action_update_slots
+  - slot_was_set:
+    - symptom_severity: true
+  - slot_was_set:
+    - symptoms: true
+  - action: action_ask_next_question
+  # - action: action_ask_symptom_duration
+  - slot_was_set:
+    - last_question: true
+  - intent: provide_details
+  #- action: action_update_slots
+  - slot_was_set:
+    - symptom_severity: true
+  - slot_was_set:
+    - symptom_duration: true
+  - action: action_ask_next_question
+  # - action: action_ask_contact_info
+  - slot_was_set:
+    - last_question: true
+  - intent: provide_contact_info
+    entities:
+    - phone_number: '2211332211'
+    - phone_number: '2211312211'
+    - phone_number: '2211332211'
+    - phone_number: '2211312211'
+  - slot_was_set:
+    - contact_info: '2211312211'
+  - action: action_ask_next_question
+  # - action: action_ask_past_health_conditions
+  - slot_was_set:
+    - last_question: past_health_conditions
+  - intent: provide_past_health_conditions
+  - slot_was_set:
+    - past_health_conditions: i have had arthiritis
+  - action: action_ask_next_question
+  # - action: action_submit_and_provide_diagnosis
+  # - action: action_submit_and_provide_diagnosis_helper
+ 
+

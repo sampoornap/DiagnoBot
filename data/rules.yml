@@ -1,0 +1,170 @@
+version: "3.1"
+
+rules:
+
+# - rule: List the medication anytime user asks for them
+#   steps:
+#   - intent: ask_medication_names
+#   - action: action_provide_medication_names
+
+# - rule: List side effects of medication anytime user asks
+#   steps:
+#   - intent: ask_side_effects
+#   # - action: action_extract_medical_entities
+#   - action: action_provide_side_effects
+
+
+- rule: Activate session start
+  steps:
+    - action: action_session_start
+
+
+
+- rule: Provide diagnosis
+  steps:
+  - intent: ask_medical_condition
+  - action: action_ask_next_question
+
+- rule: Say goodbye anytime the user says goodbye
+  steps:
+  - intent: goodbye
+  - action: utter_goodbye
+
+- rule: User thanks the bot
+  steps:
+    - intent: thank_you
+    - action: utter_thank_you_response
+
+- rule: User interjects and asks reason for providing symptoms
+  steps:
+    - intent: ask_reason_symptoms
+    - action: action_reason_for_asking_symptoms
+    
+
+- rule: User interjects and asks reason for providing duration
+  steps:
+    - intent: ask_reason_duration
+    - action: action_reason_for_asking_symptom_duration
+   
+
+- rule: User interjects and asks reason for providing past conditions
+  steps:
+    - intent: ask_reason_past_conditions
+    - action: action_reason_for_asking_past_health_conditions
+   
+- rule: User interjects and asks reason for providing contact
+  steps:
+    - intent: ask_reason_contact_info
+    - action: action_reason_for_asking_contact_info
+    
+
+- rule: User interjects and asks reason for providing severity
+  steps:
+    - intent: ask_reason_severity
+    - action: action_reason_for_asking_symptom_severity
+   
+- rule: Ignore affirmation
+  steps:
+  - intent: affirm_ignore
+
+
+- rule: User provides symptoms
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  # - action: action_update_slots
+  - action: action_ask_next_question
+
+- rule: User provides symptoms and duration
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  # - action: action_update_slots
+  - action: action_ask_next_question
+
+- rule: User provides symptoms and severity
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  # - action: action_update_slots
+  - action: action_ask_next_question
+
+- rule: User provides duration and severity
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  # - action: action_update_slots
+  - action: action_ask_next_question
+
+- rule: User provides symptom, duration and severity
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  # - action: action_update_slots
+  - action: action_ask_next_question
+
+- rule: user provides age
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  - action: action_ask_next_question
+
+- rule: user provides gender
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  - action: action_ask_next_question
+
+
+- rule: User provides duration
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  # - action: action_update_slots
+  - action: action_ask_next_question
+
+- rule: User provides severity
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_details
+  # - action: action_update_slots
+  - action: action_ask_next_question
+
+- rule: User provides past conditions
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_past_health_conditions
+  - action: action_ask_next_question
+  
+- rule: User provides other details
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_other_details
+  - action: action_ask_next_question
+
+- rule: User provides contact info
+  steps:
+  - action: action_ask_next_question
+  - intent: provide_contact_info
+    entities:
+    - contact_info
+  - action: action_ask_next_question
+
+
+
+- rule: User asks for explanation
+  steps:
+  - intent: provide_explanation
+  - action: action_provide_explanation
+  
+- rule: User needs further help
+  steps:
+    - action: utter_ask_if_need_help
+    - intent: affirm
+    - action: utter_how_can_i_help
+
+- rule: User does not need further help
+  steps:
+    - action: utter_ask_if_need_help
+    - intent: deny
+    - action: utter_thank_you
