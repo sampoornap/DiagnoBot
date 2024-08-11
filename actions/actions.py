@@ -552,16 +552,18 @@ class ActionAskNextQuestion(Action):
             if 'SEVERITY' in entities:
                 slot_updates.append(SlotSet("symptom_severity", True))
                 tracker.slots["symptom_severity"] = True
-
             if 'DURATION' in entities or 'DOSAGE' in entities or 'DATE' in entities:
                 slot_updates.append(SlotSet("symptom_duration", True))
                 tracker.slots["symptom_duration"] = True
             if 'AGE' in entities:
                 slot_updates.append(SlotSet("patient_age", True))
                 tracker.slots["patient_age"] = True
-            if 'SEX' in entities or 'LAB_VALUE' in entities:
+            words = ['woman', 'girl', 'lady', 'female', 'man', 'boy', 'guy', 'gentleman', 'male', 'non-binary', 'non binary', 'nonbinary', 'genderqueer', 'gender queer', 'genderfluid', 'gender fluid', 'trans']
+            if 'SEX' in entities or any(word in latest_message.lower() for word in words):
                 slot_updates.append(SlotSet("patient_sex", True))
                 tracker.slots["patient_sex"] = True
+    
+
             
             slot_updates.append(SlotSet("patient_responses", patient_responses +"|"+ latest_message))
             tracker.slots["patient_responses"] = (patient_responses + "|" + latest_message)
