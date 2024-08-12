@@ -27,9 +27,6 @@ pipeline:
     epochs: 100
     constrain_similarities: true
   # - name: custom_components.med7check.Med7NER
-  - name: RegexEntityExtractor
-    epochs: 100
-    constrain_similarities: true
   - name: EntitySynonymMapper
   - name: ResponseSelector
     epochs: 100

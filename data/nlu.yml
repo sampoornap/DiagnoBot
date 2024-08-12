@@ -359,6 +359,8 @@ nlu:
     - I’ve been having some digestive issues.
     - I also have some sharp pains in my side.
     - I’ve been feeling unusually anxious.
+    - No nothing else
+    - Nothing for now
 
 - intent: need_follow_up
   examples: |
