@@ -128,6 +128,44 @@ class ActionProvideMedicationNames(Action):
             response = model.generate_content(prompt)
 
             return response.text
+        
+
+class ActionHandleFollowUpQuestions(Action):
+    def name(self) -> str:
+        return "action_handle_follow_up_questions"
+    
+    
+
+    def run(self, dispatcher, tracker, domain):
+
+        last_n_events = 20  
+        recent_conversation = []
+        
+        for event in tracker.events[-last_n_events:]:
+            if event.get("event") == "user":
+                recent_conversation.append(f"User: {event.get('text')}")
+            elif event.get("event") == "bot":
+                recent_conversation.append(f"Bot: {event.get('text')}")
+        
+        user_message = tracker.latest_message.get("text")
+        diagnosis_result = tracker.get_slot("current_diagnosis")  
+        conversation_memory = recent_conversation  
+
+        follow_up_data = {
+            "patient_diagnosis": diagnosis_result,
+            "patient_query": user_message,
+            "conversation_history": conversation_memory
+        }
+
+        response = requests.post("http://localhost:5001/follow_up", json=follow_up_data)
+        follow_up_result = response.json()[0]
+       
+        dispatcher.utter_message(text=follow_up_result)
+        suggested_follow_up_question = response.json()[1]
+        suggested_follow_up_message = "Suggested Follow Up: " + suggested_follow_up_question
+        dispatcher.utter_message(text=suggested_follow_up_message)
+
+        return [FollowupAction("utter_ask_if_need_help")]
 
 class ActionProvideSideEffects(Action):
 
@@ -242,14 +280,15 @@ class ActionSubmitAndProvideDiagnosisHelper(Action):
         # dispatcher.utter_message(text="All slots have been cleared.")
         
         
-        return [SlotSet(slot, None) for slot in tracker.slots] + [FollowupAction("utter_ask_if_need_help")]
+        return [SlotSet(slot, None) for slot in tracker.slots] + [FollowupAction("utter_ask_if_need_help")] + [SlotSet("current_diagnosis", response)]
     
     def provide_langchain_response(self, report) -> Text:
         if not report:
             prompt = f"I'm sorry, I couldn't find any information necessary for diagnosis."
+            return prompt
         else:
-            response = requests.post("http://localhost:5001/process", json={"text": report})
-            langchain_result = response.json().get('result')
+            response = requests.post("http://localhost:5001/diagnosis", json={"text": report})
+            langchain_result = response.json()
 
             return langchain_result
 
@@ -571,10 +610,10 @@ class ActionAskNextQuestion(Action):
             # Optional: Add additional logic to handle specific cases
 
             # Notify user about the updates
-            if slot_updates:
-                dispatcher.utter_message(text="Slots updated based on the latest message.")
-            else:
-                dispatcher.utter_message(text="No relevant entities found in the latest message.")
+            # if slot_updates:
+            #     dispatcher.utter_message(text="Slots updated based on the latest message.")
+            # else:
+            #     dispatcher.utter_message(text="No relevant entities found in the latest message.")
        
         # for slot_update in slot_updates:
         #     tracker.slots[slot_update.key] = slot_update.value

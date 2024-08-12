@@ -20,6 +20,7 @@ intents:
 - deny
 - inform_symptom
 - provide_other_details
+- need_follow_up
 
 
 entities:
@@ -95,6 +96,11 @@ slots:
     - other_details
     mappings:
     - type: custom
+  current_diagnosis:
+    type: text
+    mappings:
+    - type: custom
+  
 responses:
   utter_introduction:
   - text: Hi, I am DiagnoBot, your medical diagnosis assistant.
@@ -225,6 +231,8 @@ actions:
 - action_ask_patient_age
 - action_ask_patient_sex
 - action_ask_other_details
+- action_handle_follow_up_questions
+
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: false

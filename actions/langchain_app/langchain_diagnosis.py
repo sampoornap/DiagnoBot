@@ -1,5 +1,7 @@
 # from langchain_core.prompts import PromptTemplate
 from langchain_cohere.llms import Cohere
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.prompts import ChatPromptTemplate
 
 from langchain_cohere import CohereEmbeddings
 
@@ -19,7 +21,7 @@ COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 # os.environ["COHERE_API_KEY"] = getpass.getpass()
 
-def generate_diagnosis(patient_details, open_book=False):
+def generate_diagnosis(patient_details):
     # pinecone_prompt_template = PromptTemplate(template="{query}")
 
     formatted_prompt = patient_details
@@ -94,19 +96,82 @@ def generate_diagnosis(patient_details, open_book=False):
     return model.invoke(formatted_prompt)
 
 
-print(generate_diagnosis("i have a heartache and chest pain"))
+
+def handle_follow_up_questions(patient_diagnosis, patient_query, conversation_history):
+    llm = Cohere(cohere_api_key=COHERE_API_KEY)
+
+
+    prompt_template = ChatPromptTemplate.from_template("""
+    Based on the following diagnosis and conversation history:
+
+    Diagnosis: {diagnosis}
+    Conversation History: {history}
+
+    Answer the user's follow-up query:
+    {query}
+    """)
+
+    # Create a sequence of runnables
+    chain = prompt_template | llm | StrOutputParser()
+
+    diagnosis =  patient_diagnosis
+    history = conversation_history
+    user_query = patient_query
+
+    # Run the sequence to get a response
+    response = chain.invoke({
+        "diagnosis": diagnosis,
+        "history": history,
+        "query": user_query
+    })
+
+    print(response)
+    print('\n\n\n\n\n\n\n\n')
+
+    analysis_prompt = ChatPromptTemplate.from_template("What could be a potential/ helpful follow up question that a patient potentially diagnosed with this disease may ask? Just mention the question, no other information is required  {response}")
+
+    composed_chain = (
+        {"response": chain}
+        | analysis_prompt
+        | llm
+        | StrOutputParser()
+    )
+
+    # Run the composed chain
+    follow_up_suggestion = composed_chain.invoke({
+        "diagnosis": diagnosis,
+        "history": history,
+        "query": user_query
+    })
+
+    print(follow_up_suggestion)
+
+    return response, follow_up_suggestion
 
 
 
+# app = Flask(__name__)
 
-app = Flask(__name__)
+# @app.route('/diagnosis', methods=['POST'])
+# def diagnosis():
+#     print("Diagnosis endpoint hit")
+#     data = request.json
+#     result = generate_diagnosis(data['text'])
+#     return jsonify(result)
 
-@app.route('/diagnosis', methods=['POST'])
-def diagnosis():
-    data = request.json
-    # Perform diagnosis using langchain_cohere
-    result = generate_diagnosis(data)
-    return jsonify(result)
+# @app.route('/follow_up', methods=['POST'])
+# def follow_up():
+#     print("follow up endpoint hit")
+#     data = request.json
+    
+#     patient_diagnosis = data.get('patient_diagnosis')
+#     patient_query = data.get('patient_query')
+#     conversation_history = data.get('conversation_history')
+    
+   
+#     result = handle_follow_up_questions(patient_diagnosis, patient_query, conversation_history)
+#     return jsonify(result)
 
-if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=5001)
+# if __name__ == "__main__":
+#     app.run(host='0.0.0.0', port=5001)
+

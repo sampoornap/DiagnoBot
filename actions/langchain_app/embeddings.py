@@ -140,7 +140,8 @@ class CohereEmbeddings(BaseModel, Embeddings):
             truncate=self.truncate,
             embedding_types=self.embedding_types,
         ).embeddings
-        return [list(map(float, e)) for e in embeddings.float]
+        embeddings = embeddings.float
+        return [list(map(float, e)) for e in embeddings]
 
     async def aembed(
         self,

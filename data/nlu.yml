@@ -359,3 +359,34 @@ nlu:
     - I’ve been having some digestive issues.
     - I also have some sharp pains in my side.
     - I’ve been feeling unusually anxious.
+
+- intent: need_follow_up
+  examples: |
+    - I have some follow-up questions
+    - I need more details about the diagnosis
+    - Can you clarify something about the diagnosis?
+    - I have more questions regarding my condition
+    - I need additional information
+    - Can you provide more details?
+    - I have a follow-up question
+    - Can you explain the diagnosis in more detail?
+    - What does this diagnosis mean for me?
+    - Are there any other possible conditions related to my symptoms?
+    - How should I proceed based on this diagnosis?
+    - Can you provide more information about the treatment options?
+    - What are the next steps I should take?
+    - Can you clarify how this diagnosis was made?
+    - Are there any additional tests I need to consider?
+    - What should I watch out for with this condition?
+    - How accurate is this diagnosis?
+    - Can you provide more context about the diagnosis?
+    - Is there anything else I need to know about my condition?
+    - What are the implications of this diagnosis for my daily life?
+    - Are there any lifestyle changes I should consider?
+    - How can I manage this condition effectively?
+    - What resources or support are available for this diagnosis?
+    - Can you explain any medical terms or jargon used in the diagnosis?
+    - What are the common symptoms of this condition?
+    - How frequently should I follow up with a healthcare provider?
+    - What should I do if my symptoms change or worsen?
+    - Can you recommend any specialists or resources for further information?
