@@ -44,13 +44,10 @@ def append_to_json(new_titles):
     with open('wikipedia_medical_data.json', 'r') as f:
         existing_data = json.load(f)
     
-    # Fetch new data
     new_data = fetch_wikipedia_introductions(new_titles)
     
-    # Update existing data with new data
     existing_data.update(new_data)
     
-    # Save updated data back to the file
     with open('wikipedia_medical_data.json', 'w') as f:
         json.dump(existing_data, f, indent=4)
 

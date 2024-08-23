@@ -182,3 +182,9 @@ rules:
     - action: utter_ask_if_need_help
     - intent: deny
     - action: utter_thank_you
+
+- rule: User asks additional follow up questions
+  steps: 
+    - action: action_handle_follow_up_questions
+    - intent: need_follow_up
+    - action: action_handle_follow_up_questions

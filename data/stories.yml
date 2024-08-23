@@ -104,9 +104,8 @@ stories:
     - last_question: symptoms
   - intent: provide_details
   - slot_was_set:
-    # - symptom_list: true
+    - symptoms: true
     - symptom_duration: true
-  #- action: action_update_slots
   - action: action_ask_next_question
 
 - story: provide severity
@@ -117,7 +116,6 @@ stories:
   - intent: provide_details
   - slot_was_set:
     - symptom_severity: true
-  #- action: action_update_slots
   - action: action_ask_next_question
 
 
@@ -129,10 +127,9 @@ stories:
   - intent: provide_details
   - slot_was_set:
     - symptom_duration: true
-  #- action: action_update_slots
   - action: action_ask_next_question
 
-- story: provide age and sex
+- story: provide age and gender
   steps:
   - action: action_ask_next_question
   - slot_was_set:
@@ -142,10 +139,10 @@ stories:
     - patient_age: true
   - action:  action_ask_next_question
   - slot_was_set:
-    - last_question: patient_sex
+    - last_question: patient_gender
   - intent: provide_details
   - slot_was_set:
-    - patient_sex: true
+    - patient_gender: true
   - action:  action_ask_next_question
   
 
@@ -157,10 +154,8 @@ stories:
   - slot_was_set:
     - last_question: symptoms
   - intent: provide_details
-    
   - slot_was_set:
     - symptoms: true
-  #- action: action_update_slots
   - action: action_ask_next_question
 
 - story: provide past health conditions
@@ -194,7 +189,6 @@ stories:
     - symptoms: true
     - symptom_severity: true
     - symptom_duration: true
-  # - action: action_update_slots
   - action: action_ask_next_question
   
 
@@ -208,7 +202,6 @@ stories:
   - slot_was_set:
     - symptoms: true
     - symptom_duration: true
-  #- action: action_update_slots
   - action: action_ask_next_question
 
 - story: provide contact information as email
@@ -247,26 +240,18 @@ stories:
   steps:
   - intent: ask_medical_condition
   - action: action_ask_next_question
-  # - action: action_ask_symptoms
   - slot_was_set:
     - last_question: symptoms
   - intent: provide_details
-  #   entities:
-  #   - symptom_severity: severe
-  #   - symptoms: sore throat
-  #   - symptom_duration: 2 days
-  # - slot_was_set:
-  #   - symptoms: sore throat
-  # - slot_was_set:
-  #   - symptom_list:
-  #     - sore throat
-  # - slot_was_set:
-  #   - symptom_duration: 2 days
-  # - slot_was_set:
-  #   - symptom_severity: severe
-  #- action: action_update_slots
+  
+  
   - action: action_ask_next_question
-  # - action: action_ask_contact_info
+  - slot_was_set:
+    - last_question: past_health_conditions
+  - intent: provide_past_health_conditions
+  - slot_was_set:
+    - past_health_conditions: i have had bronchitis in the past
+  - action: action_ask_next_question
   - slot_was_set:
     - last_question: contact_info
   - intent: provide_contact_info
@@ -276,15 +261,8 @@ stories:
   - slot_was_set:
     - contact_info: '9988776655'
   - action: action_ask_next_question
-  # - action: action_ask_past_health_conditions
-  - slot_was_set:
-    - last_question: past_health_conditions
-  - intent: provide_past_health_conditions
-  - slot_was_set:
-    - past_health_conditions: i have had bronchitis in the past
-  - action: action_ask_next_question
-  # - action: action_submit_and_provide_diagnosis
 
+  
 - story: interactive_story_2
   steps:
   - intent: greet
@@ -310,6 +288,14 @@ stories:
     - symptom_severity: true
   - slot_was_set:
     - symptom_duration: true
+  
+  - action: action_ask_next_question
+  # - action: action_ask_past_health_conditions
+  - slot_was_set:
+    - last_question: past_health_conditions
+  - intent: provide_past_health_conditions
+  - slot_was_set:
+    - past_health_conditions: i have had arthiritis
   - action: action_ask_next_question
   # - action: action_ask_contact_info
   - slot_was_set:
@@ -322,13 +308,6 @@ stories:
     - phone_number: '2211312211'
   - slot_was_set:
     - contact_info: '2211312211'
-  - action: action_ask_next_question
-  # - action: action_ask_past_health_conditions
-  - slot_was_set:
-    - last_question: past_health_conditions
-  - intent: provide_past_health_conditions
-  - slot_was_set:
-    - past_health_conditions: i have had arthiritis
   - action: action_ask_next_question
   # - action: action_submit_and_provide_diagnosis
   # - action: action_submit_and_provide_diagnosis_helper

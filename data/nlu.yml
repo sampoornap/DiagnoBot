@@ -69,6 +69,9 @@ nlu:
     - i have had allergies
     - i have had bronchitis in the past
     - i have had arthritis
+    - no i have not had any recent issues 
+    - No I have not faced any health conditions recently
+    - Nothing relevant to my current condition
 - intent: provide_explanation
   examples: |
     - Why do you need this information?
@@ -392,3 +395,4 @@ nlu:
     - How frequently should I follow up with a healthcare provider?
     - What should I do if my symptoms change or worsen?
     - Can you recommend any specialists or resources for further information?
+    - Are there any immediate precautions that I should be taking?

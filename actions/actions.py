@@ -318,7 +318,7 @@ class ActionSubmitAndProvideDiagnosisHelper(Action):
             prompt = (f"The following are responses from a patient. Please compile them into a structured doctor report in the following format:"
                       "Doctor Report:"
                       "Patient Age: [Age]"
-                      "Sex: [Sex]"
+                      "Gender: [Gender]"
                       "Symptoms: [Symptoms]"
                       "Duration: [Duration]"
                       "Severity: [Severity]"
@@ -447,16 +447,16 @@ class ActionAskPatientAge(Action):
         dispatcher.utter_message(response="utter_ask_patient_age")
         return [SlotSet("last_question", "patient_age")] 
     
-class ActionAskPatientSex(Action):
+class ActionAskPatientGender(Action):
 
     def name(self) -> Text:
-        return "action_ask_patient_sex"
+        return "action_ask_patient_gender"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        dispatcher.utter_message(response="utter_ask_patient_sex")
-        return [SlotSet("last_question", "patient_sex")] 
+        dispatcher.utter_message(response="utter_ask_patient_gender")
+        return [SlotSet("last_question", "patient_gender")] 
 
 class ActionAskContactInfo(Action):
 
@@ -649,19 +649,19 @@ class ActionAskNextQuestion(Action):
                 tracker.slots["symptoms"] = latest_message
 
             if 'SEVERITY' in entities:
-                slot_updates.append(SlotSet("symptom_severity", True))
-                tracker.slots["symptom_severity"] = True
+                slot_updates.append(SlotSet("symptom_severity", latest_message))
+                tracker.slots["symptom_severity"] = latest_message
             if 'DURATION' in entities or 'DOSAGE' in entities or 'DATE' in entities:
-                slot_updates.append(SlotSet("symptom_duration", True))
-                tracker.slots["symptom_duration"] = True
+                slot_updates.append(SlotSet("symptom_duration", latest_message))
+                tracker.slots["symptom_duration"] = latest_message
             age = self.find_age(latest_message)
             if last_question == 'patient_age' and age:
                 slot_updates.append(SlotSet("patient_age", age))
                 tracker.slots["patient_age"] = age
             words = ['woman', 'girl', 'lady', 'female', 'man', 'boy', 'guy', 'gentleman', 'male', 'non-binary', 'non binary', 'nonbinary', 'genderqueer', 'gender queer', 'genderfluid', 'gender fluid', 'trans']
             if 'SEX' in entities or any(word in latest_message.lower() for word in words):
-                slot_updates.append(SlotSet("patient_sex", True))
-                tracker.slots["patient_sex"] = True
+                slot_updates.append(SlotSet("patient_gender", latest_message))
+                tracker.slots["patient_gender"] = latest_message
     
 
             
@@ -684,7 +684,7 @@ class ActionAskNextQuestion(Action):
         symptom_duration = tracker.get_slot("symptom_duration")
         symptom_severity = tracker.get_slot("symptom_severity")
         age = tracker.get_slot("patient_age")
-        sex = tracker.get_slot("patient_sex")
+        gender = tracker.get_slot("patient_gender")
         contact_info = tracker.get_slot("contact_info")
         past_health_conditions = tracker.get_slot("past_health_conditions")
         patient_responses = tracker.get_slot("patient_responses")
@@ -695,7 +695,7 @@ class ActionAskNextQuestion(Action):
         print(f"Symptom Severity: {symptom_severity}")
         print(f"Contact Info: {contact_info}")
         print(f"age: {age}")
-        print(f"sex: {sex}")
+        print(f"gender: {gender}")
         print(f"Past Health Conditions: {past_health_conditions}")
         print(f"responses {patient_responses}")
         
@@ -711,9 +711,9 @@ class ActionAskNextQuestion(Action):
         patient_age = tracker.get_slot("patient_age")
         if not patient_age:
             return  slot_updates + [FollowupAction("action_ask_patient_age")]
-        patient_sex = tracker.get_slot("patient_sex")
-        if not patient_sex:
-            return  slot_updates + [FollowupAction("action_ask_patient_sex")]
+        patient_gender = tracker.get_slot("patient_gender")
+        if not patient_gender:
+            return  slot_updates + [FollowupAction("action_ask_patient_gender")]
         contact_info = tracker.get_slot("contact_info")
         if not contact_info:
             return  slot_updates + [FollowupAction("action_ask_contact_info")]
@@ -754,9 +754,9 @@ class ActionAskNextQuestionHelper(Action):
         patient_age = tracker.get_slot("patient_age")
         if not patient_age:
             return  [FollowupAction("action_ask_patient_age")]
-        patient_sex = tracker.get_slot("patient_sex")
-        if not patient_sex:
-            return  [FollowupAction("action_ask_patient_sex")]
+        patient_gender = tracker.get_slot("patient_gender")
+        if not patient_gender:
+            return  [FollowupAction("action_ask_patient_gender")]
         contact_info = tracker.get_slot("contact_info")
         if not contact_info:
             return  [FollowupAction("action_ask_contact_info")]

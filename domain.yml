@@ -43,7 +43,7 @@ slots:
     mappings:
     - type: custom
     influence_conversation: true
-  patient_sex:
+  patient_gender:
     type: text
     mappings:
     - type: custom
@@ -66,12 +66,14 @@ slots:
     - type: from_entity
       entity: phone_number
     influence_conversation: true
+
   past_health_conditions:
     type: text
     mappings:
     - type: from_text
       intent: provide_past_health_conditions
     influence_conversation: true
+
   other_details:
     type: text
     mappings:
@@ -90,7 +92,7 @@ slots:
     - symptom_duration
     - symptom_severity
     - patient_age
-    - patient_sex
+    - patient_gender
     - contact_info
     - past_health_conditions
     - other_details
@@ -150,12 +152,12 @@ responses:
   - text: What is your age?
   - text: Can you provide your age?
   - text: How old are you?
-  utter_ask_patient_sex:
-  - text: Can you tell me your sex?
+  utter_ask_patient_gender:
+  - text: Can you tell me your gender?
   - text: What is your gender?
-  - text: Please provide your sex.
+  - text: Please provide your gender.
   - text: May I know your gender?
-  - text: Could you tell me your sex?
+  - text: Could you tell me your gender?
   utter_provide_diagnosis:
   - text: Diagnosing............
   - text: Analyzing your information for a diagnosis...
@@ -229,7 +231,7 @@ actions:
 - utter_thank_you
 - action_update_slots
 - action_ask_patient_age
-- action_ask_patient_sex
+- action_ask_patient_gender
 - action_ask_other_details
 - action_handle_follow_up_questions
 
