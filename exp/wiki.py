@@ -16,6 +16,7 @@ def fetch_wikipedia_introductions(page_titles):
         
             intro = page.summary
             page_introductions[title] = intro
+            print(title)
         else:
              print(f"Page '{title}' does not exist on Wikipedia.")
     return page_introductions
@@ -27,16 +28,18 @@ def save_to_file(data, file_path):
         json.dump(data, f, indent=4)
 
 
-# medicine_names = load_list_from_file('medicine_name.txt')
-# medical_conditions = load_list_from_file('medical_condition.txt')
+medicine_names = load_list_from_file('medicine_name.txt')
+medical_conditions = load_list_from_file('medical_condition.txt')
 
 
-# all_titles = medicine_names + medical_conditions
-# wikipedia_contents = fetch_wikipedia_introductions(all_titles)
+wikipedia_medical_conditions_contents = fetch_wikipedia_introductions(medical_conditions)
+wikipedia_medicine_names_contents = fetch_wikipedia_introductions(medicine_names)
 
 
-# save_to_file(wikipedia_contents, 'wikipedia_medical_data.json')
-# print("saved to json!")
+save_to_file(wikipedia_medical_conditions_contents, 'wikipedia_medical_conditions_data.json')
+save_to_file(wikipedia_medicine_names_contents, 'wikipedia_medicine_names_data.json')
+
+print("saved to json!")
 
 all_titles = load_list_from_file('additional_titles.txt')
 def append_to_json(new_titles):
@@ -53,4 +56,4 @@ def append_to_json(new_titles):
 
 
 
-append_to_json(all_titles)
+# append_to_json(all_titles)

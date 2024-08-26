@@ -22,7 +22,7 @@ index_name = "medical-information"
 # index_metadata = pc.describe_index(index_name)
 
 # print(index_metadata['dimension'])
-with open('medical_embeddings_light.pkl', 'rb') as f:
+with open('medicine_name_embeddings_light.pkl', 'rb') as f:
     loaded_embeddings = pickle.load(f)
 
 loaded_embeddings_unidecode = {unidecode(med): emb for med, emb in loaded_embeddings.items()}
@@ -48,13 +48,13 @@ index = pc.Index(index_name)
 embeddings_array = np.array(loaded_embeddings_unidecode)
 
 
-def batch_upsert(index, vectors, batch_size=100):
+def batch_upsert(index, vectors, namespace, batch_size=100):
     for i in range(0, len(vectors), batch_size):
         batch = vectors[i:i+batch_size]
-        index.upsert(batch)
+        index.upsert(vectors=batch, namespace=namespace)
 
 
 vectors = [(med, emb) for med, emb in loaded_embeddings_unidecode.items()]
-batch_upsert(index, vectors)
+batch_upsert(index, vectors, namespace='medicine-names' )
 
 print("Embeddings upserted successfully.")

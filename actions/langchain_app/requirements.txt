@@ -80,3 +80,4 @@ google-api-python-client
 pinecone-client[grpc]
 python-dotenv
 flask
+langchain-mistralai

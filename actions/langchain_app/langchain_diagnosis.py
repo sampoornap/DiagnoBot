@@ -4,19 +4,25 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 
 from langchain_cohere import CohereEmbeddings
+from langchain_core.messages import HumanMessage
+from langchain_mistralai.chat_models import ChatMistralAI
 
 from pinecone.grpc import PineconeGRPC as Pinecone
 from pinecone import ServerlessSpec
 import pinecone
+import logging
 
+logging.basicConfig(level=logging.WARNING)
 
 from flask import Flask, request, jsonify
 
 import os
 from dotenv import load_dotenv
+import json
 
 load_dotenv()
 
+MISTRAL_API_KEY = os.getenv("MISTRAL_API_KEY") 
 COHERE_API_KEY = os.getenv("COHERE_API_KEY")
 PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
 # os.environ["COHERE_API_KEY"] = getpass.getpass()
@@ -41,9 +47,9 @@ def generate_diagnosis(patient_details):
     if index_name not in pc.list_indexes().names():
         pc.create_index(
             name=index_name,
-            dimension=1024,
+            dimension=384,
             metric="cosine",
-            spec=ServerlessSpec(
+            spec=ServerlessSpec(       
                 cloud='aws', 
                 region='us-east-1'
             ) 
@@ -51,16 +57,36 @@ def generate_diagnosis(patient_details):
 
     index = pc.Index(index_name)
 
-    query_response = index.query(
+    query_response_condition = index.query(
         vector=embedded_query,   
-        top_k=1,                  
+        top_k=3, 
+        namespace='medical-conditions',                 
         include_values=True)
     
-    for match in query_response['matches']:
-        print(f"ID: {match['id']}, Score: {match['score']}, Values: {match['values']}")
+    query_response_medicine = index.query(
+        vector=embedded_query,   
+        top_k=3, 
+        namespace='medicine-names',                 
+        include_values=True)
+    
 
-    embeddings_list = [match['values'] for match in query_response['matches']]
-    print(len(embeddings_list[0]))
+    with open('wikipedia_medical_data.json') as f:
+        medical_data = json.load(f)
+    
+    for match in query_response_condition['matches']:
+        # print(f"ID: {match['id']}, Score: {match['score']}, Values: {match['values']}")
+        pass
+
+    for match in query_response_medicine['matches']:
+        # print(f"ID: {match['id']}, Score: {match['score']}, Values: {match['values']}")
+        pass
+
+    matched_conditions = [medical_data[match['id']] for match in query_response_condition['matches']]
+    # print(matched_conditions)
+
+    matched_medicines = [medical_data[match['id']] for match in query_response_medicine['matches']]
+    # print(matched_medicines)
+
     # embeddings_array = np.array(embeddings_list)
 
     # pca = PCA(n_components=512)
@@ -76,7 +102,7 @@ def generate_diagnosis(patient_details):
         "Given the challenges they face in accessing medical care, you must provide a thorough diagnosis and considerate suggestions for treatment."
         "It’s crucial that you address the patient directly. Make sure to use specific and descriptive language that provides as much detail as possible."
         "Speak with kindness, understanding, and reassurance, acknowledging the patient's concerns and fears."
-         "Remember, the patient is reading this, so speak to them personally."
+         "Remember, the patient is reading this, so address them. Also make sure to let them know that you are not a real doctor."
         "Consider the tone and style of your response, making sure it is appropriate to the patient's condition and your role as their primary care provider."
         "Use your extensive knowledge of rare medical conditions to provide the patient with the best possible medical advice and treatment along with also emotional support."
         f"Report: {patient_details}\n"
@@ -84,21 +110,27 @@ def generate_diagnosis(patient_details):
         "This response will go to a doctor for verification before being sent to the end user.")
 
 
+    formatted_prompt = f"Query: {query_text}\n Possible medical conditions that are most closely related to the patient symptoms and need to be accounted for:\n"
+    for i, embedding in enumerate(matched_conditions):
+        formatted_prompt += f"Embedding {i + 1}: {embedding}\n"
 
-    formatted_prompt = f"Query: {query_text}\nRelated Embeddings:\n"
-    for i, embedding in enumerate(embeddings_list):
+    formatted_prompt += "Possible medicine details that are most closely related to the patient symptoms : "
+    for i, embedding in enumerate(matched_medicines):
         formatted_prompt += f"Embedding {i + 1}: {embedding}\n"
 
     model = Cohere(cohere_api_key=COHERE_API_KEY)
 
-    print(model.invoke(formatted_prompt))
+    chat = ChatMistralAI(model="mistral-small", api_key=MISTRAL_API_KEY)
+    messages = [HumanMessage(content=formatted_prompt)]
+
+    # print(model.invoke(messages))
 
     return model.invoke(formatted_prompt)
 
 
 
 def handle_follow_up_questions(patient_diagnosis, patient_query, conversation_history):
-    llm = Cohere(cohere_api_key=COHERE_API_KEY)
+    llm = ChatMistralAI(model="mistral-small", api_key=MISTRAL_API_KEY)
 
 
     prompt_template = ChatPromptTemplate.from_template("""
@@ -174,4 +206,3 @@ def handle_follow_up_questions(patient_diagnosis, patient_query, conversation_hi
 
 # if __name__ == "__main__":
 #     app.run(host='0.0.0.0', port=5001)
-
