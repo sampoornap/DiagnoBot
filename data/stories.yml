@@ -313,3 +313,10 @@ stories:
   # - action: action_submit_and_provide_diagnosis_helper
  
 
+- story: User needs further help 
+  steps:
+    - action: utter_ask_if_need_help
+    - intent: need_follow_up
+    - action: action_handle_follow_up_questions
+    - intent: need_follow_up
+    - action: action_handle_follow_up_questions

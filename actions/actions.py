@@ -139,6 +139,23 @@ class ActionHandleFollowUpQuestions(Action):
 
     def run(self, dispatcher, tracker, domain):
 
+        user_question = tracker.latest_message.get("text")
+        def send_input_to_colab(input_text):
+            medllama_url = os.getenv("MEDLLAMA_URL")
+            url = medllama_url + "/process_query"
+            response = requests.post(url, json={"question": input_text})
+            return response.json()['response']
+        
+        
+        response = send_input_to_colab(user_question)
+        dispatcher.utter_message(text=response)
+
+        return [FollowupAction("utter_ask_if_need_help")]
+
+
+
+    def handle_with_rag_and_mistral(dispatcher, tracker):
+
         last_n_events = 20  
         recent_conversation = []
         
@@ -159,10 +176,11 @@ class ActionHandleFollowUpQuestions(Action):
         }
 
         response = requests.post("http://localhost:5001/follow_up", json=follow_up_data)
-        follow_up_result = response.json()[0]
+        # print(response.json())
+        follow_up_result = response.json()["response"]
        
         dispatcher.utter_message(text=follow_up_result)
-        suggested_follow_up_question = response.json()[1]
+        suggested_follow_up_question = response.json()["follow_up_suggestion"]
         suggested_follow_up_message = "Suggested Follow Up: " + suggested_follow_up_question
         dispatcher.utter_message(text=suggested_follow_up_message)
 
@@ -266,14 +284,14 @@ class ActionSubmitAndProvideDiagnosisHelper(Action):
 
         doctor_report = self.generate_doctor_report(llm_report) + f"Contact: {contact_info}"
         
-        response = self.provide_langchain_response(llm_report)
+        response = self.provide_medllama_response(llm_report)
         dispatcher.utter_message(text=llm_report)
         dispatcher.utter_message(text=response)
         
-       
-        self.send_email("somename@gmail.com", "Patient Diagnosis Report", doctor_report)
+        email_id = os.getenv("EMAIL_ID")
+        self.send_email(email_id, "Patient Diagnosis Report", doctor_report)
         
-        dispatcher.utter_message(text="Sent a report to Dr. XYZ. You should here back in 3 days.")
+        dispatcher.utter_message(text="Sent a report to one of our registered doctors. You should hear back in 3 days.")
 
         # AllSlotsReset()
         
@@ -283,6 +301,23 @@ class ActionSubmitAndProvideDiagnosisHelper(Action):
         
         return [SlotSet(slot, None) for slot in tracker.slots] + [FollowupAction("utter_ask_if_need_help")] + [SlotSet("current_diagnosis", response)]
     
+    def provide_medllama_response(self, report) -> Text:
+
+        def send_input_to_colab(input_text):
+            medllama_url = os.getenv("MEDLLAMA_URL")
+            url = medllama_url + "/process_query"
+            response = requests.post(url, json={"question": input_text})
+            return response.json()['response']
+        
+        if not report:
+            prompt = f"I'm sorry, I couldn't find any information necessary for diagnosis."
+            return prompt
+        else: 
+            response = send_input_to_colab(report)
+            return response
+
+
+    
     def provide_langchain_response(self, report) -> Text:
         if not report:
             prompt = f"I'm sorry, I couldn't find any information necessary for diagnosis."
@@ -291,7 +326,7 @@ class ActionSubmitAndProvideDiagnosisHelper(Action):
             response = requests.post("http://localhost:5001/diagnosis", json={"text": report})
             langchain_result = response.json()
 
-            return langchain_result
+            return langchain_result['result']
 
 
     def generate_cohere_llm_response(self, report) -> Text:
@@ -647,26 +682,50 @@ class ActionAskNextQuestion(Action):
             if last_question == "symptoms":
                 slot_updates.append(SlotSet("symptoms", latest_message))
                 tracker.slots["symptoms"] = latest_message
+                patient_responses += f"Symptoms: {latest_message}. "
 
             if 'SEVERITY' in entities:
                 slot_updates.append(SlotSet("symptom_severity", latest_message))
                 tracker.slots["symptom_severity"] = latest_message
+                if last_question == "symptom_severity":
+                    patient_responses += f"Symptom severity: {latest_message}. "
+
             if 'DURATION' in entities or 'DOSAGE' in entities or 'DATE' in entities:
                 slot_updates.append(SlotSet("symptom_duration", latest_message))
                 tracker.slots["symptom_duration"] = latest_message
+                if last_question == "symptom_duration":
+                    patient_responses += f"Symptom duration: {latest_message}. "
+
             age = self.find_age(latest_message)
             if last_question == 'patient_age' and age:
                 slot_updates.append(SlotSet("patient_age", age))
                 tracker.slots["patient_age"] = age
+                patient_responses += f"Patient age: {latest_message}. "
+
+
             words = ['woman', 'girl', 'lady', 'female', 'man', 'boy', 'guy', 'gentleman', 'male', 'non-binary', 'non binary', 'nonbinary', 'genderqueer', 'gender queer', 'genderfluid', 'gender fluid', 'trans']
             if 'SEX' in entities or any(word in latest_message.lower() for word in words):
                 slot_updates.append(SlotSet("patient_gender", latest_message))
                 tracker.slots["patient_gender"] = latest_message
-    
+                if last_question == 'patient_gender':
+                    patient_responses += f"Gender: {latest_message}. "
+
+            if last_question == "past_health_conditions":
+                patient_responses += f"Past Heath Conditions: {latest_message}. "
+
+            if last_question == "other_details":
+                patient_responses += f"Additional Information: {latest_message}. "
+
+            if last_question == "contact_info":
+                patient_responses += f"Contact info: {latest_message}. "
 
             
-            slot_updates.append(SlotSet("patient_responses", patient_responses +"|"+ latest_message))
-            tracker.slots["patient_responses"] = (patient_responses + "|" + latest_message)
+
+            
+
+        
+        slot_updates.append(SlotSet("patient_responses", patient_responses))
+        tracker.slots["patient_responses"] = (patient_responses)
 
             # Optional: Add additional logic to handle specific cases
 

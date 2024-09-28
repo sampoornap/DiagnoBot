@@ -54,6 +54,7 @@ nlu:
     - its [xyz@gmail.com](email)
 - intent: provide_past_health_conditions
   examples: |
+    - I was down with a viral infection around 2 months back
     - I have diabetes and hypertension
     - I've had asthma since childhood
     - I suffer from chronic migraines

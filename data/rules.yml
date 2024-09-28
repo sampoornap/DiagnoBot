@@ -157,21 +157,21 @@ rules:
   - intent: provide_explanation
   - action: action_provide_explanation
 
-- rule: User needs further help 
-  steps:
-    - action: utter_ask_if_need_help
-    - intent: affirm
-    - action: utter_how_can_i_help
+# - rule: User needs further help 
+#   steps:
+#     - action: utter_ask_if_need_help
+#     - intent: affirm
+#     - action: utter_how_can_i_help
   
 - rule: User needs further help (new diagnosis)
   steps:
-    - action: utter_how_can_i_help
+    - action: utter_ask_if_need_help
     - intent: ask_medical_condition
     - action: action_ask_next_question
 
 - rule: User needs further help (follow up)
   steps:
-    - action: utter_how_can_i_help
+    - action: utter_ask_if_need_help
     - intent: need_follow_up
     - action: action_handle_follow_up_questions
 

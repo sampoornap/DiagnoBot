@@ -75,10 +75,13 @@ def generate_diagnosis(patient_details):
     
     for match in query_response_condition['matches']:
         # print(f"ID: {match['id']}, Score: {match['score']}, Values: {match['values']}")
-        pass
+        print(f"ID: {match['id']}, Score: {match['score']}")
+        
 
     for match in query_response_medicine['matches']:
         # print(f"ID: {match['id']}, Score: {match['score']}, Values: {match['values']}")
+        print(f"ID: {match['id']}, Score: {match['score']}")
+
         pass
 
     matched_conditions = [medical_data[match['id']] for match in query_response_condition['matches']]
@@ -102,35 +105,36 @@ def generate_diagnosis(patient_details):
         "Given the challenges they face in accessing medical care, you must provide a thorough diagnosis and considerate suggestions for treatment."
         "It’s crucial that you address the patient directly. Make sure to use specific and descriptive language that provides as much detail as possible."
         "Speak with kindness, understanding, and reassurance, acknowledging the patient's concerns and fears."
-         "Remember, the patient is reading this, so address them. Also make sure to let them know that you are not a real doctor."
+         "Remember, the patient is reading this, so address them (in 2nd person/You might be facing...). Your message must appear like a patient-doctor conversaation where you are the doctor Also make sure to let them know that you are not a real doctor. Just saying that 'I am not a human doctor' is enough"
         "Consider the tone and style of your response, making sure it is appropriate to the patient's condition and your role as their primary care provider."
-        "Use your extensive knowledge of rare medical conditions to provide the patient with the best possible medical advice and treatment along with also emotional support."
+        "Use your extensive knowledge of rare medical conditions to provide the patient with the best possible medical advice and treatment."
         f"Report: {patient_details}\n"
         "Provide a thoughtful diagnosis along with suggested over-the-counter medications, keeping in mind the patient's well-being."
-        "This response will go to a doctor for verification before being sent to the end user.")
+        "This response will go to a doctor for verification before being sent to the end user."
+        "Below attached are some relevant medical conditions and medicine names which should be considered for and you should include in your diagnosis. Remember to add suggested over-the-counter medications")
 
 
     formatted_prompt = f"Query: {query_text}\n Possible medical conditions that are most closely related to the patient symptoms and need to be accounted for:\n"
     for i, embedding in enumerate(matched_conditions):
-        formatted_prompt += f"Embedding {i + 1}: {embedding}\n"
+        formatted_prompt += f"Condition {i + 1}: {embedding}\n"
 
     formatted_prompt += "Possible medicine details that are most closely related to the patient symptoms : "
     for i, embedding in enumerate(matched_medicines):
-        formatted_prompt += f"Embedding {i + 1}: {embedding}\n"
+        formatted_prompt += f"Medicine {i + 1}: {embedding}\n"
 
     model = Cohere(cohere_api_key=COHERE_API_KEY)
 
-    chat = ChatMistralAI(model="mistral-small", api_key=MISTRAL_API_KEY)
+    # chat = ChatMistralAI(model="mistral-small", api_key=MISTRAL_API_KEY)
     messages = [HumanMessage(content=formatted_prompt)]
 
-    # print(model.invoke(messages))
+    print(model.invoke(messages))
 
     return model.invoke(formatted_prompt)
 
 
 
 def handle_follow_up_questions(patient_diagnosis, patient_query, conversation_history):
-    llm = ChatMistralAI(model="mistral-small", api_key=MISTRAL_API_KEY)
+    llm = Cohere(cohere_api_key=COHERE_API_KEY)
 
 
     prompt_template = ChatPromptTemplate.from_template("""
@@ -160,7 +164,7 @@ def handle_follow_up_questions(patient_diagnosis, patient_query, conversation_hi
     print(response)
     print('\n\n\n\n\n\n\n\n')
 
-    analysis_prompt = ChatPromptTemplate.from_template("What could be a potential/ helpful follow up question that a patient potentially diagnosed with this disease may ask? Just mention the question, no other information is required  {response}")
+    analysis_prompt = ChatPromptTemplate.from_template("What could be a potential/ helpful follow up question that a patient potentially diagnosed with this disease may ask?  {response}. Please suggest one 1 follow up question directly. No fluff. No need to say \"A suggested follow up might be...\".")
 
     composed_chain = (
         {"response": chain}
@@ -206,3 +210,5 @@ def handle_follow_up_questions(patient_diagnosis, patient_query, conversation_hi
 
 # if __name__ == "__main__":
 #     app.run(host='0.0.0.0', port=5001)
+
+print(generate_diagnosis( "I have mild body pain for 4 days. i am 34 years old and have no history of such conditions."))
