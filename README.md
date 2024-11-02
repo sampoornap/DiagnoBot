@@ -7,11 +7,7 @@ This repository contains a Rasa based chat medical chat system, that can be used
 1. [Project Overview](#project-overview)
 2. [Directory Structure](#directory-structure)
 3. [Key Components](#key-components)
-4. [Configuration](#configuration)
-5. [Usage](#usage)
-6. [Extending the Project](#extending-the-project)
-7. [Testing](#testing)
-8. [Dependencies](#dependencies)
+4. [Dependencies](#dependencies)
 
 ## Project Overview
 
@@ -47,3 +43,36 @@ This project implements a robust pipeline incorporating Rasa, LangChain, various
 ├── story_graph.dot               
 └── test_medllama.py              # finetuned medllama model
 ```
+
+
+## Key Components
+
+### 1. Actions Module (`actions/`)
+
+- Contains custom actions that are triggered based on user message such as asking medical diagnosis questions, answering follow-up questions and generating doctor report.
+- Contains a langchain based mechanism that has embeddings of wikipedia summaries of all diseases listed by the NIH stored in a pinecone database.
+- Patient information is converted to embeddings and a similarity search algorithm ranks the top n possible diagnoses/medications. Response generation is done using fine-tuned LLama or mistral.
+
+### 2. Data Module (`data/`)
+
+- Contains configuration files for the Rasa chat system.
+
+### 3. Custom Components Module (`custom_components/`)
+
+- Has a custom spell checker and medical NER tagging mechanism.
+
+
+## Dependencies
+
+- Rasa
+- PyTorch
+- LangChain
+- Cohere
+- Wikipedia-API
+- Tensorflow
+- Tokenizers
+- GitPython
+
+For a complete list of dependencies, refer to `requirements.txt`.
+
+---
